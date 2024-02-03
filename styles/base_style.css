@@ -1,0 +1,35 @@
+@import url('/styles/vars.css');
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: var(--std-font);
+  font-weight: var(--std-weight);
+}
+
+header {
+  height: 20vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+header img {
+  max-height: 70%;
+}
+
+main {
+  display: flex;
+  height: 80vh;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+main div {
+  max-height: 50%;
+}
+
+main div img {
+  max-height: 100%;
+}
