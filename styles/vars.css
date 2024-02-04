@@ -3,4 +3,7 @@
   --text-color: #aaa8aa;
   --std-font: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;
   --std-font-weight: normal;
+  --card-outline: #fff8;
+  --card-bg-odd: #162c58;
+  --card-bg-even: #4b0713;
 }

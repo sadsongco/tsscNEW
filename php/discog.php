@@ -1,22 +1,24 @@
 <?php
 
 // open database connection
-require_once("../../secure/scripts/db_pdo_connect.php");
+// require_once("../../secure/scripts/db_pdo_connect.php");
+include_once("includes/std_includes.php");
 
-$artpath = "/assets/images/discog_album_covers/";
+$artpath = "/assets/web/discography_images/";
 $audiopath = "/assets/audio/";
-$noimage = "/assets/images/graphics/notfound.jpg";
+$noimage = "/assets/web/graphics/notfound.jpg";
 
 $query = "SELECT    id,
                     artist,
                     product AS title,
                     year,
-                    role AS note,
+                    role,
+                    notes,
                     cover_art AS imgurl,
                     itunes_link,
                     spotify_link
         FROM discography
-        ORDER BY    year DESC;";
+        ORDER BY year DESC, id DESC;";
 
 try {
     $stmt = $db->prepare($query);
@@ -44,7 +46,4 @@ catch (PDOException $ex) {
     $output[] = '"ERROR"'.$ex;
 }            
 
-echo json_encode($output);
-require_once("../../secure/scripts/db_pdo_disconnect.php");
-
-?>
+echo $m->render('discog', $output);

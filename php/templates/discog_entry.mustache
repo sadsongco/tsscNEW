@@ -1,0 +1,29 @@
+<article class="discog_entry card">
+    <div class="centered">
+        <div class="artist">
+            {{artist}}
+        </div>
+        <div class="album_title">
+            {{title}}
+        </div>
+        <div class="album_image">
+            {{>discog_image}}
+        </div>
+        <div class="buy_links">
+            {{#spotify_link}}
+                <a href="{{spotify_link}}" target="_blank">Listen on Spotify</a>
+            {{/spotify_link}}
+            {{#itunes_link}}
+                {{#spotify_link}}&nbsp;||&nbsp;{{/spotify_link}}
+                <a href="{{itunes_link}}" target="_blank">Buy on iTunes</a>
+            {{/itunes_link}}
+        </div>
+    </div>
+    <div class="album_role">
+        <p class="role">{{role}}</p>
+        <p class="notes">{{{notes}}}</p>
+    </div>
+    {{#audio}}
+        {{>audio_entry}}
+    {{/audio}}
+</article>
