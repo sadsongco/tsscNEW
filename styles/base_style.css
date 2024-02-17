@@ -33,3 +33,7 @@ main div {
 main div img {
   max-height: 100%;
 }
+
+a {
+  color: rgb(245, 245, 224);
+}
