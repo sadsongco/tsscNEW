@@ -15,3 +15,9 @@ $m = new Mustache_Engine(array(
     'partials_loader' => new Mustache_Loader_FilesystemLoader(__DIR__.'/../templates/partials')
 ));
 
+function getHost() {
+    $protocol = 'http';
+    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') $protocol .= 's';
+    return "$protocol://".$_SERVER['HTTP_HOST'];
+}
+

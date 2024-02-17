@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/base_style.css" />
+    <link rel="stylesheet" href="styles/discog.css" />
+    <script src="lib/htmx.min.js"></script>
+    <title>Nigel Powell - Gigography</title>
+  </head>
+  <body>
+    <h1>Nigel Powell - Gigography</h1>
+    <p>I wanted to try and gather together all of the gigs I've done into one place. It will likely be a work in progress for some time...</p>
+    <main hx-get="php/gigog.php" hx-trigger="load"></main>
+  </body>
+</html>

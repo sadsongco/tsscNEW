@@ -5,7 +5,7 @@
 include_once("includes/std_includes.php");
 
 $artpath = "/assets/web/discography_images/";
-$audiopath = "/assets/audio/";
+$audiopath = "/assets/audio/discog/";
 $noimage = "/assets/web/graphics/notfound.jpg";
 
 $query = "SELECT    id,
