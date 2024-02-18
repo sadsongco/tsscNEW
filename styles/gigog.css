@@ -1,0 +1,21 @@
+main {
+  height: fit-content;
+}
+
+.gigog-row {
+  height: fit-content;
+  min-height: 1em;
+  width: clamp(20em, 80%, 60em);
+  padding: 0.4em;
+  margin-bottom: 0.15em;
+  display: grid;
+  grid-template-columns: 3em 8em 2fr 1fr;
+}
+
+.gigog-row:nth-child(odd) {
+  background-color: var(--card-bg-odd);
+}
+
+.gigog-row:nth-child(even) {
+  background-color: var(--card-bg-even);
+}

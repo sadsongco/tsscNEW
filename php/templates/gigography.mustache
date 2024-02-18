@@ -1,0 +1,6 @@
+{{#.}}
+    <article class="gigog-row" hx-get="php/gigog_entry.php?show_id={{show_id}}" hx-trigger="intersect" hx-target="#show_details_{{show_id}}" hx-swap="outerHTML">
+        <div>{{row_num}}</div>
+        <div id="show_details_{{show_id}}"></div>
+    </article>
+{{/.}}
