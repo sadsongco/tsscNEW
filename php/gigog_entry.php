@@ -10,8 +10,10 @@ try {
         event,
         venue,
         city,
+        countries.country_id,
         countries.disp_name AS country_name,
         notes,
+        bands.band_id,
         bands.band_name
      FROM shows
      LEFT JOIN countries ON countries.country_id = shows.country_id

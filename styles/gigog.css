@@ -9,7 +9,7 @@ main {
   padding: 0.4em;
   margin-bottom: 0.15em;
   display: grid;
-  grid-template-columns: 3em 8em 2fr 1fr;
+  grid-template-columns: 3em 8em 2fr 0.7fr 1fr;
 }
 
 .gigog-row:nth-child(odd) {

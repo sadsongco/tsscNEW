@@ -1,3 +1,5 @@
     <div>{{date}}</div>
-    <div>{{#event}}{{event}}, {{/event}}{{{venue}}}, {{city}}, {{country_name}}</div>
-    <div>{{band_name}}</div>
+    <div popovertarget="notes_{{show_id}}">{{#event}}{{event}}, {{/event}}{{{venue}}}, {{city}}</div>
+    <div hx-get="php/gigog.php?filter=country&id={{country_id}}" hx-target="main" hx-swap="innerHTML">{{country_name}}</div>
+    <div hx-get="php/gigog.php?filter=band&id={{band_id}}" hx-target="main" hx-swap="innerHTML">{{band_name}}</div>
+    <div popover id="notes_{{show_id}}">{{notes}}</div>
