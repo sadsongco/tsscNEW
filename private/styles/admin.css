@@ -1,0 +1,9 @@
+input,
+select,
+textarea {
+  display: block;
+}
+
+main {
+  height: fit-content;
+}

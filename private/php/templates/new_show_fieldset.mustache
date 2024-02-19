@@ -1,0 +1,26 @@
+        <fieldset >
+            <label for="event_{{fieldset}}">Event</label>
+            <input type="text" name="show[{{fieldset}}][event]" id="event_{{fieldset}}" placeholder="event" autocomplete="off">
+            <label for="venue_{{fieldset}}">Venue</label>
+            <input type="text" name="show[{{fieldset}}][venue]" id="venue_{{fieldset}}" placeholder="venue" autocomplete="off" required>
+            <label for="town_{{fieldset}}">Town</label>
+            <input type="text" name="show[{{fieldset}}][town]" id="town_{{fieldset}}" placeholder="town" autocomplete="off">
+            <label for="city_{{fieldset}}">City</label>
+            <input type="text" name="show[{{fieldset}}][city]" id="city_{{fieldset}}" placeholder="city" autocomplete="off" required>
+            <label for="date_{{fieldset}}">Show Date</label>
+            <input type="date" name = "show[{{fieldset}}][date]" id="date_{{fieldset}}" autocomplete="off">
+            <label for="country_{{fieldset}}">Country</label>
+            <select name="show[{{fieldset}}][country]" id="country_{{fieldset}}" autocomplete="off">
+                {{#countries}}
+                    {{>country_option}}
+                {{/countries}}
+            </select>
+            <label for="band_{{fieldset}}">Band</label>
+            <select name="show[{{fieldset}}][band]" id="band_{{fieldset}}">
+                {{#bands}}
+                    {{>band_option}}
+                {{/bands}}
+            </select>
+            <label for="notes_{{fieldset}}">Notes</label>
+            <textarea name="show[{{fieldset}}][notes]" id="notes_{{fieldset}}" cols="30" rows="5" placeholder="notes" autocomplete="off"></textarea>
+        </fieldset>

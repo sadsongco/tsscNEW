@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/base_style.css" />
+    <link rel="stylesheet" href="styles/admin.css" />
+    <script src="../lib/htmx.min.js"></script>
+    <title>TSSC Admin</title>
+  </head>
+  <body>
+    <main>
+      <section hx-get="/private/php/new_show_form.php" hx-trigger="load"></section>
+    </main>
+  </body>
+</html>
