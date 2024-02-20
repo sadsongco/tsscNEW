@@ -18,10 +18,10 @@ foreach ($_POST['show'] AS $show) {
         NULL,
         NULL,
         :band);";
-        // p_2($show);
-        // p_2($query);
-        $stmt = $db->prepare($query);
-        $stmt->execute($show);
+        p_2($show);
+        p_2($query);
+        // $stmt = $db->prepare($query);
+        // $stmt->execute($show);
     }
     catch (PDO_EXCEPTION $e) {
         exit ("error inserting new show: ".$e->getMessage());

@@ -8,15 +8,15 @@
             <label for="city_{{fieldset}}">City</label>
             <input type="text" name="show[{{fieldset}}][city]" id="city_{{fieldset}}" placeholder="city" autocomplete="off" required>
             <label for="date_{{fieldset}}">Show Date</label>
-            <input type="date" name = "show[{{fieldset}}][date]" id="date_{{fieldset}}" autocomplete="off">
+            <input type="date" name = "show[{{fieldset}}][date]" id="date_{{fieldset}}" autocomplete="off" class="date" value="{{date_value}}">
             <label for="country_{{fieldset}}">Country</label>
-            <select name="show[{{fieldset}}][country]" id="country_{{fieldset}}" autocomplete="off">
+            <select name="show[{{fieldset}}][country]" id="country_{{fieldset}}" autocomplete="off" class="country">
                 {{#countries}}
                     {{>country_option}}
                 {{/countries}}
             </select>
             <label for="band_{{fieldset}}">Band</label>
-            <select name="show[{{fieldset}}][band]" id="band_{{fieldset}}">
+            <select name="show[{{fieldset}}][band]" id="band_{{fieldset}}" class="band">
                 {{#bands}}
                     {{>band_option}}
                 {{/bands}}
