@@ -19,3 +19,26 @@ main {
 .gigog-row:nth-child(even) {
   background-color: var(--card-bg-even);
 }
+
+.filter:hover {
+  cursor: pointer;
+}
+
+.removeFilter {
+  display: inline-block;
+  border: 1px solid #777;
+  color: black;
+  background-color: blanchedalmond;
+}
+
+.romverFilter:hover {
+  cursor: auto;
+}
+
+.removeFilter::after {
+  content: ' \22A0';
+}
+
+.removeFilter:hover::after {
+  cursor: pointer;
+}

@@ -1,6 +1,14 @@
-{{#.}}
+<div> Active Filters:
+ {{#filter_country}}{{>remove_country_filter}}{{/filter_country}}
+ {{#filter_band}}{{>remove_band_filter}}{{/filter_band}}
+</div>
+    <label for="search">Filter by search term</label>
+    <input hx-get="php/gigog.php" hx-target="main" hx-trigger="keyup changed delay:1s" type="text" name="search" id="search" hx-include="[name='filter_country'], [name='filter_band']" value="{{search}}" />
+    <input type="hidden" name="filter_country" value="{{filter_country}}" />
+    <input type="hidden" name="filter_band" value="{{filter_band}}" />
+{{#shows}}
     <article class="gigog-row" hx-get="php/gigog_entry.php?show_id={{show_id}}" hx-trigger="intersect" hx-target="#show_details_{{show_id}}" hx-swap="outerHTML">
         <div>{{row_num}}</div>
         <div id="show_details_{{show_id}}"></div>
     </article>
-{{/.}}
+{{/shows}}
