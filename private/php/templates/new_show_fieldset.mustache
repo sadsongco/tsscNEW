@@ -1,4 +1,5 @@
-        <fieldset >
+    <div id="showFieldsets" hx-swap-oob="beforeend">
+        <fieldset id="showFieldSet_{{fieldset}}">
             <label for="event_{{fieldset}}">Event</label>
             <input type="text" name="show[{{fieldset}}][event]" id="event_{{fieldset}}" placeholder="event" autocomplete="off">
             <label for="venue_{{fieldset}}">Venue</label>
@@ -23,4 +24,10 @@
             </select>
             <label for="notes_{{fieldset}}">Notes</label>
             <textarea name="show[{{fieldset}}][notes]" id="notes_{{fieldset}}" cols="30" rows="5" placeholder="notes" autocomplete="off"></textarea>
+            {{#remove_fieldset}}
+                <button type="button" onClick="removeShow(this)" data-fieldset="{{remove_fieldset}}">Delete Show</button>
+            {{/remove_fieldset}}
         </fieldset>
+    </div>
+
+    <button id="addShow" type="submit" hx-get="/private/php/new_show_fieldset.php" hx-vals='{"fieldset": "{{next_fieldset}}"}' hx-swap="outerHTML" >Add Another Show</button>

@@ -21,3 +21,24 @@ function getHost() {
     return "$protocol://".$_SERVER['HTTP_HOST'];
 }
 
+function getCountries($db) {
+    try {
+        $query = "SELECT country_id, disp_name FROM countries ORDER BY disp_name;";
+        return $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    catch (PDO_EXCEPTION $e) {
+        echo "Error retrieving countries from database: ".$e->getMessage();
+    }
+}
+
+function getBands($db) {
+    try {
+        $query = "SELECT band_id, band_name FROM bands ORDER BY band_name;";
+        return $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    catch (PDO_EXCEPTION $e) {
+        echo "Error retrieving bands from database: ".$e->getMessage();
+    }
+}

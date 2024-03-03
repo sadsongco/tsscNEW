@@ -3,8 +3,9 @@
 {{/status}}
 {{>date_band_form}}
 <form hx-post="/private/php/insert_new_show.php" id="showsForm">
-    <div id="showFieldsets" hx-get="/private/php/new_show_fieldset.php?fieldset={{fieldset}}" hx-trigger="load" hx-swap="beforeEnd">
+    <div class="separator">
+        <div id="showFieldsets"></div>
+        <button id="addShow" type="submit" hx-get="/private/php/new_show_fieldset.php" hx-vals='{"fieldset": "{{next_fieldset}}"}' hx-swap="outerHTML" >Add Another Show</button>
     </div>
-    <button id="addShow" type="submit" hx-get="/private/php/new_show_fieldset.php" hx-vals='{"fieldset": "{{next_fieldset}}"}' hx-target="#showFieldsets" hx-swap="beforeend" hx-on:submit="alert('updatebutton')">Add Another Show</button>
     <input type="submit" value="Save Shows">
 </form>

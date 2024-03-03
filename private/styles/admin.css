@@ -7,3 +7,14 @@ textarea {
 main {
   height: fit-content;
 }
+
+.separator {
+  border-bottom: 1px solid white;
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+}
+
+fieldset {
+  padding: 0.8em;
+  margin-bottom: 1em;
+}

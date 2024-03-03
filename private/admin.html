@@ -10,8 +10,10 @@
   </head>
   <body>
     <main>
-      <section hx-get="/private/php/new_show_form.php" hx-trigger="load"></section>
-      <section hx-get="/private/php/new_band_form.php" hx-trigger="load"></section>
+      <section id="dateBandForm" hx-swap-oob="innerHTML" class="separator"></section>
+      <section id="newShowForm" class="separator" hx-get="/private/php/new_show_form.php" hx-trigger="load"></section>
+      <section class="separator" hx-get="/private/php/new_band_form.php" hx-trigger="load"></section>
     </main>
+    <script src="/private/js/removeShow.js"></script
   </body>
 </html>
