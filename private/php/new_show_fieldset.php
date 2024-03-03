@@ -2,10 +2,14 @@
 
 require_once("includes/std_includes.php");
 
+function nextDay($date) {
+    return date('Y-m-d', strtotime($date . " +1 day"));
+}
+
 // set parameters
-$selected_country = isset($_GET['country']) ? $_GET['country'] : 39;
-$selected_band = isset($_GET['band']) ? $_GET['band'] : 4;
-$selected_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
+
+
+$selected_date = isset($_GET['date']) ? nextDay($_GET['date']) : date('Y-m-d');
 
 $fieldset = isset($_GET['fieldset']) ? (int)$_GET['fieldset'] : 0;
 $next_fieldset = $fieldset + 1;
@@ -22,20 +26,10 @@ catch (PDO_EXCEPTION $e) {
     echo "Database error getting countries: ".$e->message();
 }
 
-foreach ($countries AS &$country) {
-    if ($country['country_id'] == $selected_country) {
-        $country['selected'] = "selected";
-        continue;
-    }
-    $country['selected'] = "";
-}
-foreach ($bands AS &$band) {
-    if ($band['band_id'] == $selected_band) {
-        $band['selected'] = "selected";
-        continue;
-    }
-    $country['selected'] = "";
-}
+$countries = selectCountry($countries);
+$bands = selectBand($bands);
+$selected_band = getSelectedBand();
+$selected_country = getSelectedCountry();
 
 echo $m->render('new_show_fieldset', [
     "countries"=>$countries,
@@ -43,6 +37,9 @@ echo $m->render('new_show_fieldset', [
     "fieldset"=>(int)$_GET['fieldset'],
     "next_fieldset"=>(int)$_GET['fieldset']+1,
     "remove_fieldset"=>$remove_fieldset,
-    "date_value"=>$selected_date
+    "date_value"=>$selected_date,
+    "selected_band"=>$selected_band,
+    "selected_country"=>$selected_country,
+    "selected_date"=>$selected_date
 ]);
 

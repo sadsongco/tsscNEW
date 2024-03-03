@@ -30,4 +30,10 @@
         </fieldset>
     </div>
 
-    <button id="addShow" type="submit" hx-get="/private/php/new_show_fieldset.php" hx-vals='{"fieldset": "{{next_fieldset}}"}' hx-swap="outerHTML" >Add Another Show</button>
+    <button
+        id="addShow"
+        type="submit"
+        hx-get="/private/php/new_show_fieldset.php"
+        hx-vals='{"fieldset": "{{next_fieldset}}","date": "{{selected_date}}", "band": "{{selected_band}}","country": "{{selected_country}}"}'
+        hx-swap="outerHTML"
+    >Add Another Show</button>

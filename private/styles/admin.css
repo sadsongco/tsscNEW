@@ -4,6 +4,10 @@ textarea {
   display: block;
 }
 
+section {
+  width: clamp(20em, 40vw, 80%);
+}
+
 main {
   height: fit-content;
 }

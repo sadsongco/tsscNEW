@@ -33,5 +33,7 @@ foreach ($_POST['show'] AS $show) {
 $plural = $shows_inserted > 1 ? "shows" : "show";
 $countries = getCountries($db);
 $bands = getBands($db);
+$countries = selectCountry($countries);
+$bands = selectBand($bands);
 
 echo $m->render('new_show_form', ["fieldset"=>1, "next_fieldset"=>2, "status"=>"$shows_inserted $plural inserted into database", "countries"=>$countries, "bands"=>$bands]);

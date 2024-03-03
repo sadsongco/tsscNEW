@@ -25,14 +25,16 @@ const updateNewShowForm = (event) => {
   console.log(event.target.dataset.update);
   updateList.forEach((updateItem) => {
     updateItem.value = event.target.value;
-    if (event.target.dataset.update == 'date') event.target.value = addDays(event.target.value, 1);
+    if (event.target.dataset.update == 'date') (event.target.value = event.target.value), 1;
   });
   updateNewShowButton(event);
 };
 
-// attach event listeners
-const dateSelect = document.querySelector('#dateSelect');
-dateSelect.addEventListener('change', updateNewShowForm);
+const bandDateCountryEventListeners = () => {
+  // attach event listeners
+  const dateSelect = document.querySelector('#dateSelect');
+  dateSelect.addEventListener('change', updateNewShowForm);
 
-const selects = document.querySelectorAll('select');
-selects.forEach(($select) => $select.addEventListener('change', updateNewShowForm));
+  const selects = document.querySelectorAll('select');
+  selects.forEach(($select) => $select.addEventListener('change', updateNewShowForm));
+};

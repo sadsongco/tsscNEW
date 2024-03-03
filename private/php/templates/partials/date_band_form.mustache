@@ -1,6 +1,4 @@
 <div id="dateBandForm" hx-swap-oob="innerHTML" class="separator">
-    <script defer src="/private/js/updateNewShowForm.js"></script>
-
     <label for="dateSelect">Select a start date for new entries</label>
     <input type="date" name="startDate" id="dateSelect" data-update="date" />
     <label for="countrySelect">Select a country for new entries</label>
@@ -16,3 +14,4 @@
         {{/bands}}
     </select>
 </div>
+<script>bandDateCountryEventListeners();</script>
