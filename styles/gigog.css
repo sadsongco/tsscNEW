@@ -25,10 +25,16 @@ main {
 }
 
 .removeFilter {
+  font-size: 0.8em;
   display: inline-block;
   border: 1px solid #777;
   color: black;
   background-color: blanchedalmond;
+  width: 10em;
+  height: 1.3em;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .romverFilter:hover {
@@ -37,8 +43,35 @@ main {
 
 .removeFilter::after {
   content: ' \22A0';
+  text-align: right;
+  float: right;
 }
 
 .removeFilter:hover::after {
   cursor: pointer;
+}
+
+.filters {
+  background-color: #222;
+  padding: 0.2em;
+  width: clamp(60em, 70em, 80vw);
+  height: fit-content;
+  display: grid;
+  grid-template-columns: 1fr 0.7fr 0.7fr 0.7fr 0.7fr;
+  column-gap: 0.2em;
+  margin-bottom: 1em;
+}
+
+.filter {
+  padding: 0.2em;
+  border-right: 1px solid #666;
+  height: 100%;
+}
+
+.filter:last-child {
+  border-right: none;
+}
+
+select {
+  display: block;
 }

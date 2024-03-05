@@ -20,6 +20,78 @@ function get_filter_name($db, $col, $tbl, $filter, $id) {
     }
 }
 
+function getActiveYears($db, $sql_filter, $search, $params) {
+    try {
+        $query = "SELECT
+            DISTINCT YEAR(show_date) AS active_year
+            FROM shows
+            JOIN bands ON shows.band_id = bands.band_id
+            JOIN countries ON shows.country_id = countries.country_id
+            WHERE 1
+                $sql_filter
+                $search
+            ORDER BY active_year DESC;";
+        $stmt = $db->prepare($query);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    catch (PDO_EXCEPTION $e) {
+        echo "Error retrieving active years: ".$e->getMessage();
+    }
+}
+
+function getActiveCountries($db, $sql_filter, $search, $params) {
+    try {
+        $query = "SELECT
+            DISTINCT disp_name, shows.country_id 
+            FROM shows
+            JOIN bands ON shows.band_id = bands.band_id
+            JOIN countries ON shows.country_id = countries.country_id
+    WHERE 1
+    $sql_filter
+    $search
+    ;";
+    $stmt = $db->prepare($query);
+    $stmt->execute($params);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    }
+    catch (PDO_EXCEPTION $e) {
+        echo "Error retrieving active countries: ".$e->getMessage();
+    }
+}
+
+function getStats($db, $sql_filter, $search, $params) {
+    try {
+        $query = "SELECT
+            COUNT(show_id) AS shows,
+            COUNT(DISTINCT YEAR(show_date)) AS years,
+            COUNT(DISTINCT shows.country_id) AS countries,
+            COUNT(DISTINCT city) AS cities,
+            COUNT(DISTINCT shows.band_id) AS bands
+        FROM shows
+        JOIN bands ON shows.band_id = bands.band_id
+        JOIN countries ON shows.country_id = countries.country_id
+        WHERE 1
+        $sql_filter
+        $search
+        ;";
+        $stmt = $db->prepare($query);
+        $stmt->execute($params);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stats = $result[0];
+        $stats['show_pl'] = $stats['shows'] > 1 ? "shows" : "show";
+        $stats['year_pl'] = $stats['years'] > 1 ? "years" : "year";
+        $stats['country_pl'] = $stats['countries'] > 1 ? "countries" : "country";
+        $stats['city_pl'] = $stats['cities'] > 1 ? "cities" : "city";
+        $stats['band_pl'] = $stats['bands'] > 1 ? "bands" : "band";
+        return $stats;
+    }
+    catch (PDO_EXCEPTION $e) {
+        echo "Error retrieving stats: ".$e->getMessage();
+    }
+}
+
 if (isset($_GET['filter_country']) && $_GET['filter_country'] != "") {
     $sql_filter .= "\tAND shows.country_id = :filter_country";
     $params["filter_country"] = $_GET['filter_country'];
@@ -32,6 +104,13 @@ if (isset($_GET['filter_band']) && $_GET['filter_band'] != "") {
     $params["filter_band"] = $_GET['filter_band'];
     $render_params["filter_band"] = $_GET['filter_band'];
     $render_params["filter_band_name"] = get_filter_name($db, "band_name", "bands", "band_id", $_GET['filter_band']);
+}
+
+if (isset($_GET['filter_year']) && $_GET['filter_year'] != "") {
+    $sql_filter .= "\n\tAND YEAR(show_date)= :filter_year";
+    $params["filter_year"] = $_GET['filter_year'];
+    $render_params["filter_year"] = $_GET['filter_year'];
+    $render_params["filter_year_name"] = $_GET['filter_year'];
 }
 
 
@@ -71,5 +150,10 @@ try {
 catch (PDO_EXCEPTION $e) {
     echo "Database error: ".$e->getMessage();
 }
+
+$render_params['active_years'] = getActiveYears($db, $sql_filter, $search, $params);
+$render_params['active_bands'] = getBands($db);
+$render_params['active_countries'] = getActiveCountries($db, $sql_filter, $search, $params);
+$render_params['stats'] = getStats($db, $sql_filter, $search, $params);
 
 echo $m->render('gigography', $render_params);
