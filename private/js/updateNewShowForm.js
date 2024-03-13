@@ -6,6 +6,7 @@ const addDays = (date, days) => {
 };
 
 const updateNewShowButton = (event) => {
+  console.log(event.target.dataset.update);
   const addShowButton = document.getElementById('addShow');
   let params = addShowButton.getAttribute('hx-vals');
   params = JSON.parse(params);
