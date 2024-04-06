@@ -124,7 +124,8 @@ if (isset($_GET) && isset($_GET['search'])) {
     OR town LIKE :search
     OR city LIKE :search
     OR bands.band_name LIKE :search
-    OR countries.disp_name LIKE :search)";
+    OR countries.disp_name LIKE :search
+    OR notes LIKE :search)";
     $params["search"] = $search_term;
     $render_params["search"] = $_GET['search'];
 }
