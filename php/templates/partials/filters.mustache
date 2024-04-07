@@ -1,7 +1,7 @@
 <section class="filters">
     <div class="filter">
         <label for="filterBand">filter by band:</label>
-        <select id="filterBand" name="filter_band" hx-get="php/gigog.php" hx-target="main" hx-trigger="change" hx-include="[name='filter_country'], [name='search'], [name='filter_year']" >
+        <select id="filterBand" name="filter_band" hx-get="php/gigog.php" hx-target="#gigog" hx-trigger="change" hx-include="[name='filter_country'], [name='search'], [name='filter_year']" >
             <option value="{{filter_band}}"" selected>choose a band...</option>
         {{#active_bands}}
             <option value={{band_id}}>{{band_name}}</option>
@@ -11,7 +11,7 @@
 
     <div class="filter">
         <label for="filterYear">Filter by year:</label>
-        <select id="filterYear" name="filter_year"  hx-get="php/gigog.php" hx-target="main" hx-trigger="change" hx-include="[name='filter_band'], [name='filter_country'], [name='search']">
+        <select id="filterYear" name="filter_year"  hx-get="php/gigog.php" hx-target="#gigog" hx-trigger="change" hx-include="[name='filter_band'], [name='filter_country'], [name='search']">
             <option value="{{filter_year}}" selected>choose a year...</option>
         {{#active_years}}
             <option value={{active_year}}>{{active_year}}</option>
@@ -21,7 +21,7 @@
 
     <div class="filter">
         <label for="filterCountry">filter by country:</label>
-        <select id="filterCountry" name="filter_country" hx-get="php/gigog.php" hx-target="main" hx-trigger="change" hx-include="[name='filter_band'], [name='filter_year'], [name='search']" >
+        <select id="filterCountry" name="filter_country" hx-get="php/gigog.php" hx-target="#gigog" hx-trigger="change" hx-include="[name='filter_band'], [name='filter_year'], [name='search']" >
             <option value="{{filter_country}}" selected>choose a country...</option>
         {{#active_countries}}
             <option value={{country_id}}>{{disp_name}}</option>
@@ -31,7 +31,7 @@
 
     <div class="filter">
         <label for="search">Filter by search term</label>
-        <input hx-get="php/gigog.php" hx-target="main" hx-trigger="keyup changed delay:1s" type="text" name="search" id="search" hx-include="[name='filter_country'], [name='filter_band'], [name='filter_year']" value="{{search}}" />
+        <input hx-get="php/gigog.php" hx-target="#gigog" hx-trigger="keyup changed delay:1s" type="text" name="search" id="search" hx-include="[name='filter_country'], [name='filter_band'], [name='filter_year']" value="{{search}}" />
     </div>
 
     <div class="filter"><p>Active Filters:</p>

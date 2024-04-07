@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles/base_style.css" />
+    <link rel="stylesheet" href="styles/discog.css" />
+    <link rel="stylesheet" href="styles/gigog.css" />
+
+    <script src="lib/htmx.min.js"></script>
+
     <title>Nigel Powell - The Sad Song Co.</title>
   </head>
   <body>
@@ -11,10 +16,21 @@
       <img src="assets/web/graphics/nameLogo.png" alt="logo of The Sad Song Co." />
     </header>
     <main>
-      <div>
-        <img src="assets/web/graphics/rebuild-icon-27-4115869873.png" alt="icon showing a hammer and a spanner" />
-      </div>
-      <h2>we're rebuiding - come back soon.</h2>
+      <section class="tabContainer">
+        <nav class="tabSelectors">
+          <div class="tabSelector activeTab" id="discogTab" data-tab="discog" onclick="showTab(event)">Discography</div>
+          <div class="tabSelector inactiveTab" id="gigogTab" data-tab="gigog" onclick="showTab(event)">Gigography</div>
+        </nav>
+        <section class="tabs">
+          <section class="tab visibleTab" id="discog">
+            <div class="tabContent" hx-get="php/discog.php" hx-trigger="load"></div>
+          </section>
+          <section class="tab hiddenTab" id="gigog">
+            <div class="tabContent" hx-get="php/gigog.php" hx-trigger="load"></div>
+          </section>
+        </section>
+      </section>
     </main>
   </body>
+  <script src="js/showTab.js"></script>
 </html>
