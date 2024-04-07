@@ -1,7 +1,7 @@
 {{#stats}}{{>stats}}{{/stats}}
 {{>filters}}
 {{#shows}}
-    <article class="gigog-row" hx-get="php/gigog_entry.php?show_id={{show_id}}" hx-trigger="intersect" hx-target="#show_details_{{show_id}}" hx-swap="outerHTML">
+    <article id="gigogRow{{show_id}}" class="gigog-row loading" hx-get="php/gigog_entry.php?show_id={{show_id}}&row_num={{row_num}}" hx-trigger="intersect" hx-swap="outerHTML">
         <div>{{row_num}}</div>
         <div id="show_details_{{show_id}}"></div>
     </article>

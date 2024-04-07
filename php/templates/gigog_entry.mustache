@@ -1,10 +1,13 @@
+<article id="gigogRow{{show_id}}" class="gigog-row">
+    <div class="gigogCell">{{row_num}}</div>
     <div class="gigogCell">{{date}}</div>
     <div class="gigogCell" popovertarget="notes_{{show_id}}">{{#event}}{{event}}, {{/event}}{{{venue}}}, {{city}}</div>
-    <div class="filter gigogCell" hx-get="php/gigog.php?filter_country={{country_id}}" hx-target="main" hx-swap="innerHTML" hx-include="[name='filter_band'], [name='search']">
+    <div class="filter gigogCell" hx-get="php/gigog.php?filter_country={{country_id}}" hx-target="#gigog" hx-swap="innerHTML" hx-include="[name='filter_band'], [name='search']">
         {{country_name}}
     </div>
-    <div class="filter gigogCell" hx-get="php/gigog.php?filter_band={{band_id}}" hx-target="main" hx-swap="innerHTML" hx-include="[name='filter_country'], [name='search']">
+    <div class="filter gigogCell" hx-get="php/gigog.php?filter_band={{band_id}}" hx-target="#gigog" hx-swap="innerHTML" hx-include="[name='filter_country'], [name='search']">
         {{band_name}}
     </div>
 
     <div class="pop" popover id="notes_{{show_id}}">{{notes}}</div>
+</article>

@@ -27,5 +27,7 @@ try {
 catch (PDO_EXCEPTION $e) {
     echo "Database error: ".$e->getMessage();
 }
+
+$result[0]["row_num"] = $_GET['row_num'];
 // p_2($result[0]);
 echo $m->render('gigog_entry', $result[0]);

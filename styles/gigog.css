@@ -1,5 +1,5 @@
-main {
-  height: fit-content;
+.loading {
+  opacity: 0.5;
 }
 
 .gigog-row {
