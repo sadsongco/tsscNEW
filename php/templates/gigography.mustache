@@ -1,13 +1,15 @@
-<h1>Nigel Powell - Gigography</h1>
-<p class="tabText">I wanted to try and gather together all of the gigs I've done into one place. It will likely be a work in progress for some time...</p>
+<section class="tabContent">
+    <h1>Nigel Powell - Gigography</h1>
+    <p class="tabText">I wanted to try and gather together all of the gigs I've done into one place. It will likely be a work in progress for some time...</p>
 
-{{#stats}}{{>stats}}{{/stats}}
-{{>filters}}
-<section class="showList">
-{{#shows}}
-    <article id="gigogRow{{show_id}}" class="gigog-row loading" hx-get="php/gigog_entry.php?show_id={{show_id}}&row_num={{row_num}}" hx-trigger="intersect" hx-swap="outerHTML">
-        <div>{{row_num}}</div>
-        <div id="show_details_{{show_id}}"></div>
-    </article>
-{{/shows}}
+    {{#stats}}{{>stats}}{{/stats}}
+    {{>filters}}
+    <section class="showList">
+    {{#shows}}
+        <article id="gigogRow{{show_id}}" class="gigog-row loading" hx-get="php/gigog_entry.php?show_id={{show_id}}&row_num={{row_num}}" hx-trigger="intersect" hx-swap="outerHTML">
+            <div>{{row_num}}</div>
+            <div id="show_details_{{show_id}}"></div>
+        </article>
+    {{/shows}}
+    </section>
 </section>
