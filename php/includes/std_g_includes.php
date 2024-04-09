@@ -21,10 +21,24 @@ function getHost() {
     return "$protocol://".$_SERVER['HTTP_HOST'];
 }
 
-function getBands($db) {
+function getBands($db, $sql_filter=null, $search=null, $params=null) {
+    if (isset($_GET['filter_band']) && $_GET['filter_band'] != "") {
+        $sql_filter = null;
+        $search = null;
+        $params = null;
+    }
     try {
-        $query = "SELECT band_id, band_name FROM bands ORDER BY band_name;";
-        return $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+        $query = "SELECT DISTINCT(bands.band_id), band_name
+        FROM `bands`
+        JOIN `shows` ON shows.band_id = bands.band_id
+        JOIN countries ON shows.country_id = countries.country_id
+        WHERE 1
+                $sql_filter
+                $search
+        ORDER BY band_name;";
+        $stmt = $db->prepare($query);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
     catch (PDO_EXCEPTION $e) {

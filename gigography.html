@@ -9,6 +9,10 @@
     <title>Nigel Powell - Gigography</title>
   </head>
   <body>
-    <main hx-get="php/gigog.php" hx-trigger="load"></main>
+    <main>
+      <section class="tab" id="gigog">
+        <div class="tabContent" hx-get="php/gigog.php" hx-trigger="load" hx-swap="outerHTML"></div>
+      </section>
+    </main>
   </body>
 </html>

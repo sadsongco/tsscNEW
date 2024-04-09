@@ -21,6 +21,11 @@ function get_filter_name($db, $col, $tbl, $filter, $id) {
 }
 
 function getActiveYears($db, $sql_filter, $search, $params) {
+    if (isset($_GET['filter_year']) && $_GET['filter_year'] != "" &&!isset($_GET['filter_band'])) {
+        $sql_filter = "";
+        $search = "";
+        $params = [];
+    }
     try {
         $query = "SELECT
             DISTINCT YEAR(show_date) AS active_year
@@ -41,6 +46,11 @@ function getActiveYears($db, $sql_filter, $search, $params) {
 }
 
 function getActiveCountries($db, $sql_filter, $search, $params) {
+    if (isset($_GET['filter_country']) && $_GET['filter_country'] != "" &&!isset($_GET['filter_band'])) {
+        $sql_filter = "";
+        $search = "";
+        $params = [];
+    }
     try {
         $query = "SELECT
             DISTINCT disp_name, shows.country_id 
@@ -153,7 +163,7 @@ catch (PDO_EXCEPTION $e) {
 }
 
 $render_params['active_years'] = getActiveYears($db, $sql_filter, $search, $params);
-$render_params['active_bands'] = getBands($db);
+$render_params['active_bands'] = getBands($db, $sql_filter, $search, $params);
 $render_params['active_countries'] = getActiveCountries($db, $sql_filter, $search, $params);
 $render_params['stats'] = getStats($db, $sql_filter, $search, $params);
 
