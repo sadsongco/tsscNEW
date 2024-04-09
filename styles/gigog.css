@@ -8,7 +8,7 @@
   width: clamp(20em, 80%, 60em);
   margin-bottom: 0.15em;
   display: grid;
-  grid-template-columns: 3em 8em 2fr 0.7fr 1fr;
+  grid-template-columns: 3em 9em 2fr 0.7fr 1fr;
 }
 
 .gigogCell {
