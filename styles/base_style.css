@@ -79,7 +79,6 @@ nav.tabSelectors {
 .tab {
   width: 100%;
   position: absolute;
-  left: 0;
   top: 0;
   display: flex;
   justify-content: center;
@@ -108,6 +107,12 @@ nav.tabSelectors {
 .hiddenTab {
   left: 150vw;
   z-index: -1;
+}
+
+.noDisplay {
+  max-height: 0;
+  max-width: 0;
+  overflow: hidden;
 }
 
 .tabText {
