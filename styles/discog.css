@@ -37,14 +37,17 @@ header {
   padding: 0.5em;
   margin: 0.5em;
   border: 1px solid var(--card-outline);
+  animation-duration: 1s;
 }
 
 .card:nth-child(odd) {
   background-color: var(--card-bg-odd);
+  animation-name: slideinRight;
 }
 
 .card:nth-child(even) {
   background-color: var(--card-bg-even);
+  animation-name: slideinLeft;
 }
 
 .centered {

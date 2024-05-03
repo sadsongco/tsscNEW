@@ -120,3 +120,24 @@ nav.tabSelectors {
 .tabText {
   max-width: 90vw;
 }
+
+@keyframes slideinLeft {
+  from {
+    opacity: 0;
+    transform: rotate(35deg) translate(600px, 200px);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) translate(0);
+  }
+}
+@keyframes slideinRight {
+  from {
+    opacity: 0;
+    transform: rotate(-35deg) translate(-600px, 200px);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) translate(0);
+  }
+}
