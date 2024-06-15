@@ -4,6 +4,18 @@ textarea {
   display: block;
 }
 
+input {
+  width: 100%;
+}
+
+select {
+  width: clamp(10em, fit-content, 20em);
+}
+
+input[type='submit'] {
+  width: clamp(10em, 15em, 20em);
+}
+
 section {
   width: clamp(20em, 40vw, 80%);
 }

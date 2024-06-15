@@ -1,0 +1,20 @@
+<form hx-post="php/add_discog_clips.php" hx-encoding="multipart/form-data">
+<label for="discography_id">Discography Entry</label>
+    <select name="discography_id" id="discography_id" onchange="updateArtist(event)">
+        {{#discog_options}}
+            <option value="{{id}}" id="{{id}}" data-artist="{{artist}}" {{selected}}>{{artist}} - {{product}} - {{year}}</option>
+        {{/discog_options}}
+    </select>
+    <label for="clip_artist">Artist</label>
+    <input type="text" name="artist" id="clip_artist" value="{{artist}}">
+    <label for="title">Title</label>
+    <input type="text" name="title" id="title">
+    <label for="audio_clip">Audio Clip</label>
+    <input type="file" name="audio_clip" id="audio_clip">
+    <label for="filename">Audio filename</label>
+    <input type="text" name="filename" id="filename">
+    <label for="notes">Notes</label>
+    <input type="text" name="notes" id="notes">
+    <input type="submit" value="Add Discography Clip">
+</form>
+<script src="js/updateArtist.js"></script>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/base_style.css" />
+    <link rel="stylesheet" href="styles/admin.css" />
+    <script src="../lib/htmx.min.js"></script>
+    <title>The Sad Song Co. - Discog Update</title>
+  </head>
+  <body>
+    <main>
+      <h1>Discography Updating</h1>
+      <section class="upload separator" id="uploadForm" hx-get="php/discog_form.php" hx-trigger="load"></section>
+      <section class="upload separator" id="clipsForm" hx-get="php/clips_form.php" hx-trigger="load"></section>
+    </main>
+  </body>
+</html>

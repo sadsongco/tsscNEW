@@ -1,3 +1,6 @@
 *error_log*
 .DS_Store
 .prettierignore
+php.ini
+assets/web/discography_images/*
+assets/audio/discog/*
