@@ -6,7 +6,7 @@ include (__DIR__."/includes/std_includes.php");
 $track = $_POST; //VALIDATE?
 $track["host"] = getHost();
 
-p_2($_POST);
+// p_2($_POST);
 // $track["title"] = str_replace("_", " ", $track["title"]);
 // $track["notes"] = str_replace("_", " ", nl2br($track["notes"]));
 

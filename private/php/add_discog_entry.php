@@ -65,7 +65,6 @@ catch (Exception $e){
 // enter into database
 try {
     $params = $_POST;
-    p_2($params);
     $query = "INSERT INTO discography VALUES (
         NULL,
         :artist,
