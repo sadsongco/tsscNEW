@@ -33,6 +33,7 @@ figcaption.imgNotes,
 
 figure img {
   max-width: 95%;
+  object-fit: contain;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -58,6 +59,7 @@ figure.floatRight {
 }
 
 figure.floatCentered {
+  max-width: 100%;
   clear: both;
   display: flex;
   flex-direction: column;
