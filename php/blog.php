@@ -51,14 +51,19 @@ function getTags($line, $tag, $options, $func, $db, $m) {
     $regex = '/<!--{'.$tag.'::([0-9]+)::?('.implode("|", $options).')?}-->/';
     preg_match_all($regex, $line, $ids);
     if (sizeof($ids[1]) == 0) return $line;
+
     // if it's an embedded video, just remove the hiding tags
     if ($tag == "v") return preg_replace(['/<!--{v::(.*)\s?(.*)::[n|c|l]?}-->/'], '$1', $line);
+    $searches = [];
+    $replacements = [];
     foreach ($ids[1] as $key=>$id) {
         $params = $func($id, $ids[2][$key], $db);
         $replace_el = $m->render($params['template'], $params);
         $replace_str = $ids[0][$key];
-        return preg_replace("/$replace_str/", $replace_el, $line);
+        $searches[] = "/$replace_str/";
+        $replacements[] = $replace_el;
     }
+    return preg_replace($searches, $replacements, $line);
 
 }
 
