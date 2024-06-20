@@ -35,6 +35,7 @@ const hideContentTab = (tab) => {
 };
 
 const showHideTab = (e) => {
+  if (!e.target.classList.contains('tab')) return;
   if (e.target.classList.contains('visibleTab')) return;
   e.target.classList.add('noDisplay');
 };

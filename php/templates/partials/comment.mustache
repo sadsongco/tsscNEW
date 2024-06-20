@@ -1,0 +1,10 @@
+<article class="comment">
+    <div class="commentName">{{name}}</div>
+    <div class="commentDate">{{date}}</div>
+    <div class="commentBody">{{{comment}}}</div>
+</article>
+{{#replies}}
+    <div class="indent">
+    {{>comment}}
+    </div>
+{{/replies}}

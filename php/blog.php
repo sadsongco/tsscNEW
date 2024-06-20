@@ -1,83 +1,168 @@
 <?php
 
-// include utility functions
-include_once("includes/print_r2.php");
-
 // open database connection
-require_once("../../secure/scripts/db_pdo_connect.php");
+include_once("includes/std_includes.php");
+include_once("includes/get_current_blog_date.php");
 
-// initialise variables
-$output = [];
+// constants
+define("RELATIVE_ROOT", "/..");
+define("IMAGE_UPLOAD_PATH", "/assets/web/blog_images/");
+define("AUDIO_UPLOAD_PATH", "/assets/audio/blog/");
+define("HOST", getHost());
 
-// fetch the content and title for the chosen blog
-$cond = "";
-if (!isset($_GET['blog_id']) || $_GET['blog_id'] == 0 || $_GET['blog_id'] == "" || !is_numeric($_GET['blog_id']))
-    $cond = "AND blog_date = (SELECT MAX(blog_date) FROM blog_title WHERE published)";
-else $cond = "AND blog_id = ".$_GET['blog_id'];
-
-$query = "SELECT        blog_title.blog_id,  
-                        blog_content AS content,
-                        blog_title AS title,
-                        blog_date,
-                        DATE_FORMAT(blog_date, '%W %D %M, %Y') AS date
-            FROM        blog_title
-            JOIN        blog_content USING (blog_id)
-            WHERE       published
-            $cond
-            AND         blog_date < NOW();";
-
-try {
-    $stmt = $db->prepare($query);
-    $stmt->execute();
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $tmpArr = [];
-        foreach ($row as $key=>$value) {
-            $tmpArr[$key] = $value;
+function parseBody($blog_id, $body, $db, $m) {
+    $content = explode("\n", str_replace("\n\r", "\n", $body));
+    $output = "<p>";
+    for ($x = 0; $x < sizeof($content); $x++) {
+        if ($content[$x] == "" || $content[$x] == "\n") continue;
+        // $content[$x] = parseLinks($content[$x], $m);
+        $content[$x] = getMedia($content[$x], $db, $m);
+        if ($x+1 < sizeof($content) && ($content[$x+1] == "" || $content[$x+1] == "\n")) {
+            $output .= trim($content[$x])."</p>\n<p>";
+            continue;
         }
-        // fetch any tagged other content
-        $tmpArr['images'] = fetch_images($row['blog_id'], $db);
-        $tmpArr['comments'] = fetch_comments($row['blog_id'], $db);
-        $tmpArr['footnotes'] = fetch_footnotes($row['blog_id'], $db);
-        $tmpArr['spotify'] = fetch_spotify($row['blog_id'], $db);
-        $tmpArr['itunes'] = fetch_itunes($row['blog_id'], $db);
-        $tmpArr['quotes'] = fetch_quotes($row['blog_id'], $db);
-        $tmpArr['audio'] = fetch_audio($row['blog_id'], $db);
-        $tmpArr['next_blog'] = fetch_next_blog($row['blog_date'], $db);
-        $tmpArr['prev_blog'] = fetch_prev_blog($row['blog_date'], $db);
-        $output[0] = $tmpArr;
-        $output[0]['other_blogs'] = fetch_other_blogs($row['blog_id'], $db);
+        $output .= trim($content[$x])."<br />\n";
+    }
+    $output .= "</p>";
+    return $output;
+}
+
+function getMedia($line, $db, $m) {
+    $options = ["l", "r", "L", "R", "c", "C", "n"];
+    // get images, old and new tags
+    $line = getTags($line, "b", $options, "getImage", $db, $m);
+    $line = getTags($line, "i", $options, "getImage", $db, $m);
+    // Get audio
+    $line = getTags($line, "a", $options, "getAudio", $db, $m);
+    // get footnotes
+    $line = getTags($line, "f", $options, "getFootnotes", $db, $m);
+    // get itunes and spotify
+    $line = getTags($line, "m", $options, "getItunes", $db, $m);
+    $line = getTags($line, "s", $options, "getSpotify", $db, $m);
+    $line = getTags($line, "S", $options, "getSpotify", $db, $m);
+    $line = getTags($line, "v", $options, null, null, $db, $m);
+
+    $line = trim($line);
+    return $line;
+}
+
+function getTags($line, $tag, $options, $func, $db, $m) {
+    // get tags
+    $regex = '/<!--{'.$tag.'::([0-9]+)::?('.implode("|", $options).')?}-->/';
+    preg_match_all($regex, $line, $ids);
+    if (sizeof($ids[1]) == 0) return $line;
+    // if it's an embedded video, just remove the hiding tags
+    if ($tag == "v") return preg_replace(['/<!--{v::(.*)\s?(.*)::[n|c|l]?}-->/'], '$1', $line);
+    foreach ($ids[1] as $key=>$id) {
+        $params = $func($id, $ids[2][$key], $db);
+        $replace_el = $m->render($params['template'], $params);
+        $replace_str = $ids[0][$key];
+        return preg_replace("/$replace_str/", $replace_el, $line);
+    }
+
+}
+
+function getImage($image_id, $image_float, $db) {
+    $image = getMediaArr("blog_images", $image_id, "blog_image_id", $db);
+    $image["url"] = HOST.IMAGE_UPLOAD_PATH.$image["image_url"];
+    $image['path'] = __DIR__.RELATIVE_ROOT.IMAGE_UPLOAD_PATH.$image["image_url"];
+    $image["thumbpath"] = HOST.IMAGE_UPLOAD_PATH."thumbnails/".$image["image_url"];
+    $image_metadata = getimagesize($image["path"]);
+    $image["size_string"] = $image_metadata[3];
+    $image["aspect_ratio"] = $image_metadata[0] . "/".$image_metadata[1];
+    $image["template"] = "blockImage";
+    if ($image_float) {
+        switch ($image_float) {
+            case "l":
+                $image["float"] = "floatLeft";
+                $image["template"] = "inlineImage";
+                break;
+            case "r":
+                $image["template"] = "inlineImage";
+                $image["float"] = "floatRight";
+                break;
+            default:
+                $image["float"] = "floatCentered";
+        }
+    }
+    return $image;
+}
+
+function getAudio($audio_id, $align, $db) {
+    $track = getMediaArr("blog_audio", $audio_id, "blog_audio_id", $db);
+    $track['url'] = HOST.AUDIO_UPLOAD_PATH.$track['blog_audio_url'];
+    $track['template'] = "audioPlayer";
+    return $track;
+}
+
+function getFootnotes($id, $align, $db) {
+    $footnotes = getMediaArr("blog_footnotes", $id, "blog_footnote_id", $db);
+    $footnotes['template'] = "footnote";
+    return $footnotes;
+}
+
+function getItunes($id, $align, $db) {
+    $track = getMediaArr("blog_itunes", $id, "blog_itunes_id", $db);
+    $track['template'] = "itunes";
+    return $track;
+}
+
+function getSpotify($id, $align, $db) {
+    $track = getMediaArr("blog_spotify", $id, "blog_spotify_id", $db);
+    $track['spotify_link'] = parseSptfyURL($track['spotify_link']);
+    $track['template'] = "spotify";
+    return $track;
+}
+
+function parseSptfyURL($spotify_uri) {
+    $arr = explode("/", $spotify_uri);
+    if (sizeof($arr) == 1) return splitSptfyURI($spotify_uri);
+    return splitSptfyURI("spotify:".$arr[3].":".$arr[4]);
+}
+
+function splitSptfyURI($spotify_uri) {
+    $tmp = explode(":", $spotify_uri);
+    return ["type"=>$tmp[1], "uri"=>$tmp[2]];
+}
+
+function getMediaArr($table, $id, $id_id, $db) {
+    $query = "SELECT * FROM $table WHERE $id_id = ?";
+    try {
+        $stmt = $db->prepare($query);
+        $stmt->execute([$id]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result[0];
+    }
+    catch (PDOException $e) {
+        exit("error getting media: ".$e->getMessage());
     }
 }
-catch (PDOException $ex) {
-    $output[] = '"ERROR"';
-}
-// print_r($tmpArr);
-echo json_encode($output);
 
-function fetch_images($blog_id, $db)
-{
-    $img_arr = [];
-    $query = "SELECT  image_url AS url,
-                            blog_image_title AS title,
-                            blog_image_credit AS credit,
-                            blog_image_no
-    FROM blog_images
-    WHERE blog_id = $blog_id;";
+function fetchBlogNav($date, $db, $prev=false) {
+    $cond = $prev ? "blog_date < '$date' ORDER BY blog_date DESC" : "blog_date > '$date' ORDER BY blog_date ASC";
+    $query = "  SELECT  blog_id AS id
+                FROM    blog_title
+                WHERE   published = 1
+                AND     $cond
+                LIMIT   1;";
     try {
         $stmt = $db->prepare($query);
         $stmt->execute();
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $img_arr[$row['blog_image_no']] = $row;
+        if ($stmt->rowCount() == 0) {
+            return "";
+        }
+        else {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            // naughty html creeping in - lazy boy
+            return $row;
         }
     }
     catch (PDOException $ex) {
-        $img_arr[0] = '"ERROR"';
+        return "";
     }
-    ksort($img_arr);
-    return $img_arr;
 }
 
-function fetch_comments($blog_id, $db, $comment_reply = 0) 
+function fetchComments($blog_id, $db, $comment_reply = 0) 
 {
     $comment_arr = [];
     $query = "SELECT            blog_comment_auth AS name,
@@ -94,7 +179,7 @@ function fetch_comments($blog_id, $db, $comment_reply = 0)
         $stmt = $db->prepare($query);
         $stmt->execute();
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $row['replies'] = fetch_comments($blog_id, $db, $row['blog_comment_id']);
+            $row['replies'] = fetchComments($blog_id, $db, $row['blog_comment_id']);
             $comment_arr[] = $row;
         }
     }
@@ -104,115 +189,7 @@ function fetch_comments($blog_id, $db, $comment_reply = 0)
     return $comment_arr;
 }
 
-function fetch_footnotes($blog_id, $db)
-{
-    $footnotes_arr = [];
-    $query = "SELECT            blog_footnote AS footnote,
-                                blog_footnote_no AS id
-                FROM            blog_footnotes
-                WHERE           blog_id = $blog_id
-                ORDER BY        blog_footnote_no ASC;";
-    try {
-        $stmt = $db->prepare($query);
-        $stmt->execute();
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $footnotes_arr[$row['id']] = $row;
-        }
-    }
-    catch (PDOException $ex) {
-        $comment_arr[0] = '"ERROR"';
-    }
-    return $footnotes_arr;
-}
-
-function fetch_spotify($blog_id, $db)
-{
-    $this_arr = [];
-    $query = "  SELECT          spotify_link AS url,
-                                blog_spotify_no AS id
-                FROM            blog_spotify
-                WHERE           blog_id = $blog_id
-                ORDER BY        blog_spotify_no ASC;";
-    try {
-        $stmt = $db->prepare($query);
-        $stmt->execute();
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $this_arr[$row['id']] = $row;
-        }
-    }
-    catch (PDOException $ex) {
-        $this_arr[0] = '"ERROR"';
-    }
-    return $this_arr;
-}
-
-function fetch_itunes($blog_id, $db)
-{
-    $this_arr = [];
-    $query = "  SELECT          blog_itunes_uri AS url,
-                                blog_itunes_no AS id
-                FROM            blog_itunes
-                WHERE           blog_id = $blog_id
-                ORDER BY        blog_itunes_no ASC;";
-    try {
-        $stmt = $db->prepare($query);
-        $stmt->execute();
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $this_arr[$row['id']] = $row;
-        }
-    }
-    catch (PDOException $ex) {
-        $this_arr[0] = '"ERROR"';
-    }
-    return $this_arr;
-}
-
-function fetch_quotes($blog_id, $db)
-{
-    $this_arr = [];
-    $query = "  SELECT          blog_quote AS quote,
-                                blog_quote_attribute AS attribute,
-                                blog_quote_no AS id
-                FROM            blog_quotes
-                WHERE           blog_id = $blog_id
-                ORDER BY        blog_quote_no ASC;";
-    try {
-        $stmt = $db->prepare($query);
-        $stmt->execute();
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $this_arr[$row['id']] = $row;
-        }
-    }
-    catch (PDOException $ex) {
-        $this_arr[0] = '"ERROR"';
-    }
-    return $this_arr;
-}
-
-function fetch_audio($blog_id, $db)
-{
-    $this_arr = [];
-    $query = "  SELECT          blog_audio_url AS url,
-                                blog_audio_title AS title,
-                                blog_audio_artist AS artist,
-                                blog_audio_no AS id
-                FROM            blog_audio
-                WHERE           blog_id = $blog_id
-                ORDER BY        blog_audio_no ASC;";
-    try {
-        $stmt = $db->prepare($query);
-        $stmt->execute();
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $this_arr[$row['id']] = $row;
-        }
-    }
-    catch (PDOException $ex) {
-        $this_arr[0] = '"ERROR"';
-    }
-    return $this_arr;
-}
-
-function fetch_other_blogs($id, $db) {
+function fetchOtherBlogs($id, $db) {
     $this_arr = [];
     $query = "  SELECT      blog_title.blog_id AS id,
                             blog_title AS title,
@@ -228,6 +205,7 @@ function fetch_other_blogs($id, $db) {
         $stmt = $db->prepare($query);
         $stmt->execute();
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $row['content'] = strip_tags($row['content']);
             $this_arr[] = $row;
         }
     }
@@ -237,50 +215,33 @@ function fetch_other_blogs($id, $db) {
     return $this_arr;
 }
 
-function fetch_next_blog($date, $db) {
-    $query = "  SELECT  blog_id AS id
-                FROM    blog_title
-                WHERE   blog_date > '$date'
-                LIMIT   1;";
-    try {
-        $stmt = $db->prepare($query);
-        $stmt->execute();
-        if ($stmt->rowCount() == 0) {
-            return "";
-        }
-        else {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            // naughty html creeping in - lazy boy
-            return "&nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;<a id = \"otherblog_".$row['id']."\" href = \"?page=blog#blog_id=".$row['id']."\">NEXT BLOG</a>";
-        }
-    }
-    catch (PDOException $ex) {
-        return "";
-    }
-}
 
-function fetch_prev_blog($date, $db) {
-    $query = "  SELECT  blog_id AS id
-                FROM    blog_title
-                WHERE   blog_date < '$date'
-                ORDER BY blog_date DESC
-                LIMIT   1;";
-    try {
-        $stmt = $db->prepare($query);
-        $stmt->execute();
-        if ($stmt->rowCount() == 0) {
-            return "";
-        }
-        else {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            return "<a id = \"otherblog_".$row['id']."\" href = \"?page=blog#blog_id=".$row['id']."\">PREVIOUS BLOG</a>";
-        }
-    }
-    catch (PDOException $ex) {
-        return "";
-    }
-}
+// initialise variables
+$output = [];
+if (!isset($_GET['blog_id']) || $_GET['blog_id'] == 0 || $_GET['blog_id'] == "" || !is_numeric($_GET['blog_id'])) $current_blog = false;
+else $current_blog = $_GET['blog_id'];
 
-require_once("../../secure/scripts/db_pdo_disconnect.php");
+$current_blog_arr = getCurrentBlog($db, $current_blog);
+$current_blog = $current_blog_arr['blog_id'];
+$current_blog_arr['content'] = parseBody($current_blog_arr['blog_id'], $current_blog_arr['content'], $db, $m);
 
-?>
+echo $m->render("blog_main", $current_blog_arr);
+
+// updated next and previous blog links
+$date = $current_blog_arr['blog_date'];
+$params = [];
+// get prev blog
+$params['prev_blog'] = fetchBlogNav($date, $db, true);
+// get next blog
+$params['next_blog'] = fetchBlogNav($date, $db);
+
+echo $m->render("blogNav", $params);
+
+// load comments for blog
+$comments = fetchComments($current_blog, $db);
+
+echo $m->render("blogComments", ["comments"=>$comments]);
+
+// update list of other blogs
+$other_blogs = fetchOtherBlogs($current_blog, $db);
+echo $m->render("otherBlogs", ["other_blogs"=>$other_blogs]);

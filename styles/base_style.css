@@ -89,6 +89,10 @@ nav.tabSelectors {
 
 .tabContent {
   outline: rgb(245, 245, 224);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.5em;
 }
 
 .activeTab {

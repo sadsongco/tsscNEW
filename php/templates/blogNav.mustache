@@ -1,0 +1,8 @@
+<div class="blogNavContainer">
+{{#prev_blog}}
+    <div class = "blogNav" hx-get="php/blog.php" hx-vals='{"blog_id":"{{id}}"}' hx-target="#blogContainer" hx-swap="innerHTML show:window:top" hx-push-url="?blog_id={{id}}">PREVIOUS BLOG</div>
+{{/prev_blog}}
+{{#next_blog}}
+    {{#prev_blog}}&nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;{{/prev_blog}}<div class = "blogNav" hx-get="php/blog.php" hx-vals='{"blog_id":"{{id}}"}' hx-target="#blogContainer" hx-swap="innerHTML show:window:top" hx-push-url="?blog_id={{id}}">NEXT BLOG</div>
+{{/next_blog}}
+</div>

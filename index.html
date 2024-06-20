@@ -6,8 +6,10 @@
     <link rel="stylesheet" href="styles/base_style.css" />
     <link rel="stylesheet" href="styles/discog.css" />
     <link rel="stylesheet" href="styles/gigog.css" />
+    <link rel="stylesheet" href="styles/blog.css" />
 
     <script src="lib/htmx.min.js"></script>
+    <script src="js/getGetParams.js" defer></script>
 
     <title>Nigel Powell - The Sad Song Co.</title>
   </head>
@@ -20,6 +22,7 @@
         <nav class="tabSelectors">
           <div class="tabSelector activeTab" id="discogTab" data-tab="discog" onclick="showTab(event)">Discography</div>
           <div class="tabSelector inactiveTab" id="gigogTab" data-tab="gigog" onclick="showTab(event)">Gigography</div>
+          <div class="tabSelector inactiveTab" id="blogTab" data-tab="blog" onclick="showTab(event)">Blog</div>
         </nav>
         <section class="tabs">
           <section class="tab visibleTab" id="discog">
@@ -27,6 +30,9 @@
           </section>
           <section class="tab hiddenTab" id="gigog">
             <div class="tabContent" hx-get="php/gigog.php" hx-trigger="load" hx-swap="outerHTML"></div>
+          </section>
+          <section class="tab hiddenTab" id="blog">
+            <div id="blogContainer" class="tabContent" hx-get="php/blog.php" hx-vals="js:{blog_id:getBlogId()}" hx-trigger="load"></div>
           </section>
         </section>
       </section>

@@ -4,3 +4,6 @@
 php.ini
 assets/web/discography_images/*
 assets/audio/discog/*
+assets/web/blog_images/*
+assets/audio/blog/*
+lib/phpMyAdmin
