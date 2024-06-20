@@ -12,17 +12,21 @@ figure {
 }
 
 figure figcaption {
-  font-family: 'Sulphur Point';
-  color: #777;
   max-width: 80%;
   text-align: center;
 }
 
-figcaption.imgTitle {
+figcaption.imgTitle,
+.audioTitle {
+  font-family: 'Sulphur Point';
+  color: #777;
   font-size: 0.9em;
 }
 
-figcaption.imgNotes {
+figcaption.imgNotes,
+.audioNotes {
+  font-family: 'Sulphur Point';
+  color: #777;
   font-size: 0.7em;
   font-style: italic;
 }
