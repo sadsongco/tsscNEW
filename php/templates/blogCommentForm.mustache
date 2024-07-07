@@ -1,0 +1,15 @@
+<form hx-post="php/post_comment.php">
+    <div>
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" />
+    </div>
+    <div>
+        <label for="usercomment">Comment</label>
+        <textarea name="usercomment" id="usercomment" cols="40" rows="10"></textarea>
+    </div>
+    <input type="hidden" name="blog_id" value="{{blog_id}}" />
+    {{#comment_id}}
+        <input type="hidden" name="reply_id" value="{{comment_id}}" />
+    {{/comment_id}}
+    <input type="submit" value="Post Comment" />
+</form>

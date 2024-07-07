@@ -1,0 +1,10 @@
+<section class = "commentContainer">
+{{#comments}}
+    {{>comment}}
+{{/comments}}
+</section>
+<section class="commentFormContainer">
+{{comment_id}}
+    <div class="commentLink" hx-get="php/comment_form.php" hx-target="#commentForm">Comment&gt;&gt;</div>
+    <div id="commentForm"></div>
+</section>

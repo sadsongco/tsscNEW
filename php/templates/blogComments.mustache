@@ -1,5 +1,2 @@
-<section class = "commentContainer">
-{{#comments}}
-    {{>comment}}
-{{/comments}}
+<section class="commentContainer" hx-get="php/get_blog_comments.php" hx-trigger="load, updateComments from:body" hx-vals='{"blog_id":"{{blog_id}}"}'>
 </section>

@@ -162,13 +162,21 @@ a {
 }
 
 .commentDate,
-.blogDate {
+.blogDate,
+.commentActionReply {
   display: inline-block;
   right: 40%;
   font-size: 0.7em;
   font-style: italic;
 }
 
+.commentActionReply {
+  position: absolute;
+  right: 5%;
+  text-decoration: underline;
+  color: #ccccff;
+  cursor: pointer;
+}
 .commentBody {
   display: block;
   padding: 5px;
@@ -260,4 +268,11 @@ th {
 }
 .indent {
   margin-left: 5%;
+}
+
+.commentFormContainer {
+  width: 80%;
+  margin: 0 10%;
+  background-color: rgba(100, 100, 100, 0.2);
+  padding: 0.5em;
 }

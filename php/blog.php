@@ -167,33 +167,6 @@ function fetchBlogNav($date, $db, $prev=false) {
     }
 }
 
-function fetchComments($blog_id, $db, $comment_reply = 0) 
-{
-    $comment_arr = [];
-    $query = "SELECT            blog_comment_auth AS name,
-                                blog_comment_text AS comment,
-                                blog_comment_id,
-                                DATE_FORMAT(blog_comment_date, '%a %D %M %Y, %r') as date,
-                                blog_reply_id,
-                                blog_id
-                    FROM        blog_comments
-                    WHERE       blog_id = $blog_id
-                    AND         blog_reply_id = $comment_reply
-                    ORDER BY    blog_comment_date DESC;";
-    try {
-        $stmt = $db->prepare($query);
-        $stmt->execute();
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $row['replies'] = fetchComments($blog_id, $db, $row['blog_comment_id']);
-            $comment_arr[] = $row;
-        }
-    }
-    catch (PDOException $ex) {
-        $comment_arr[0] = '"ERROR"';
-    }
-    return $comment_arr;
-}
-
 function fetchOtherBlogs($id, $db) {
     $this_arr = [];
     $query = "  SELECT      blog_title.blog_id AS id,
@@ -220,7 +193,6 @@ function fetchOtherBlogs($id, $db) {
     return $this_arr;
 }
 
-
 // initialise variables
 $output = [];
 if (!isset($_GET['blog_id']) || $_GET['blog_id'] == 0 || $_GET['blog_id'] == "" || !is_numeric($_GET['blog_id'])) $current_blog = false;
@@ -230,8 +202,6 @@ $current_blog_arr = getCurrentBlog($db, $current_blog);
 $current_blog = $current_blog_arr['blog_id'];
 $current_blog_arr['content'] = parseBody($current_blog_arr['blog_id'], $current_blog_arr['content'], $db, $m);
 
-echo $m->render("blog_main", $current_blog_arr);
-
 // updated next and previous blog links
 $date = $current_blog_arr['blog_date'];
 $params = [];
@@ -239,14 +209,13 @@ $params = [];
 $params['prev_blog'] = fetchBlogNav($date, $db, true);
 // get next blog
 $params['next_blog'] = fetchBlogNav($date, $db);
-
-echo $m->render("blogNav", $params);
-
-// load comments for blog
-$comments = fetchComments($current_blog, $db);
-
-echo $m->render("blogComments", ["comments"=>$comments]);
-
 // update list of other blogs
 $other_blogs = fetchOtherBlogs($current_blog, $db);
+
+
+// render blog tab
+echo $m->render("blogNav", $params);
+echo $m->render("blog_main", $current_blog_arr);
+echo $m->render("blogNav", $params);
+echo $m->render("blogComments", ["blog_id"=>$current_blog]);
 echo $m->render("otherBlogs", ["other_blogs"=>$other_blogs]);
