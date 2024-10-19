@@ -21,9 +21,14 @@ function getHost() {
     return "$protocol://".$_SERVER['HTTP_HOST'];
 }
 
-function getBands($db, $sql_filter=null, $search=null, $params=null) {
-    if (isset($_GET['filter_band']) && $_GET['filter_band'] != "") {
-        $sql_filter = null;
+function filterString($sql_filter_arr) {
+    return sizeof($sql_filter_arr) == 0 ? 1 : implode("\n\tAND ", $sql_filter_arr);
+   }
+
+function getBands($db, $sql_filter_arr=null, $search=null, $params=null) {
+    $sql_filter = filterString($sql_filter_arr);
+    if (isset($sql_filter_arr['filter_band']) && $sql_filter_arr['filter_band'] != "") {
+        $sql_filter = 1;
         $search = null;
         $params = null;
     }
@@ -32,9 +37,7 @@ function getBands($db, $sql_filter=null, $search=null, $params=null) {
         FROM `bands`
         JOIN `shows` ON shows.band_id = bands.band_id
         JOIN countries ON shows.country_id = countries.country_id
-        WHERE 1
-                $sql_filter
-                $search
+        WHERE $sql_filter $search
         ORDER BY band_name;";
         $stmt = $db->prepare($query);
         $stmt->execute($params);
