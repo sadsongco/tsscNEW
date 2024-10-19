@@ -9,7 +9,7 @@
   margin-bottom: 0.15em;
   display: grid;
   grid-template-columns: 3em 9em 2fr 0.7fr 1fr;
-  animation-duration: 1s;
+  animation-duration: 0.5s;
 }
 
 .gigog-row:nth-child(odd) {

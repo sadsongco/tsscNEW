@@ -38,6 +38,8 @@ header {
   margin: 0.5em;
   border: 1px solid var(--card-outline);
   animation-duration: 1s;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
 }
 
 .card:nth-child(odd) {
