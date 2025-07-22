@@ -150,7 +150,7 @@ try {
     JOIN bands ON shows.band_id = bands.band_id
     JOIN countries ON shows.country_id = countries.country_id
     WHERE $sql_filter $search
-    ORDER BY show_date ASC;";
+    ORDER BY show_date DESC;";
     $stmt = $db->prepare($query);
     $stmt->execute($params);
     $render_params['shows'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
