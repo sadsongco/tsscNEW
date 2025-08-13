@@ -23,6 +23,7 @@ $date_track = new DateTime("$cal_year-01-01");
 $interval = new DateInterval("P1D");
 $today = new DateTime();
 $this_year = (int)$today->format("Y");
+$this_year = 2025;
 
 $calendar_arr = [];
 $curr_year_idx = 0;
@@ -40,7 +41,7 @@ while ($cal_year <= $this_year) {
     $calendar_arr[$curr_year_idx]["months"][$curr_mnth_idx]["days"][$curr_day_idx]['pos_x'] = (int)$date_track->format("w");
     $calendar_arr[$curr_year_idx]["months"][$curr_mnth_idx]["days"][$curr_day_idx]['pos_y'] = $pos_y;
     if ((int)$date_track->format("w") === 6) $pos_y++;
-    if(isset($current_show) &&$current_show['show_date'] == $date_track->format("Y-m-d")) {
+    if (isset($current_show) && $current_show['show_date'] == $date_track->format("Y-m-d")) {
         array_push($calendar_arr[$curr_year_idx]["months"][$curr_mnth_idx]["days"][$curr_day_idx]['shows'], [$current_show['show_id']]);
         if (!empty($shows)) $current_show = array_pop($shows);
         else unset($current_show);

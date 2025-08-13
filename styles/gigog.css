@@ -219,3 +219,16 @@ select {
 .displayShow .displayClose:hover {
   color: red;
 }
+
+a.button {
+  padding: 0.5em;
+  background-color: #333;
+  color: white;
+  text-decoration: none;
+  border-radius: 0.3em;
+}
+
+a.button:hover {
+  background-color: #777;
+  cursor: pointer;
+}
