@@ -22,8 +22,7 @@ $cal_month = 1;
 $date_track = new DateTime("$cal_year-01-01");
 $interval = new DateInterval("P1D");
 $today = new DateTime();
-// $this_year = (int)$today->format("Y");
-$this_year = 2024;
+$this_year = (int)$today->format("Y");
 
 $calendar_arr = [];
 $curr_year_idx = 0;
