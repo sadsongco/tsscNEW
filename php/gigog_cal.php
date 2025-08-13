@@ -48,6 +48,7 @@ while ($cal_year <= $this_year) {
         while(isset($current_show) && $current_show['show_date'] == $date_track->format("Y-m-d")) {
             array_push($calendar_arr[$curr_year_idx]["months"][$curr_mnth_idx]["days"][$curr_day_idx]['shows'], [$current_show['show_id']]);
             if (!empty($shows)) $current_show = array_pop($shows);
+            else unset($current_show);
         }
         $bg;
         switch (sizeof($calendar_arr[$curr_year_idx]["months"][$curr_mnth_idx]["days"][$curr_day_idx]['shows'])) {
@@ -86,24 +87,3 @@ while ($cal_year <= $this_year) {
 }
 
 echo $m->render("gigog_calendar", ["calendar_arr"=>$calendar_arr]);
-exit();
-
-echo "<div class='calendar'>";
-foreach ($calendar_arr AS $year=>$month) {
-    echo "<h1>$year</h1>";
-    echo "<div class='year'>";
-    foreach ($month AS $month_num=>$days) {
-        echo "<div class='month'>";
-        $pos_y = 0;
-        foreach ($days AS $date=>$day) {
-            if (!$day['shows']) $bg = "var(--no-show)"; else $bg = "var(--is-show)";
-            $pos_x = $day['dayofweek'];
-            $style_str = "top: calc(var(--day-width) * $pos_y); left: calc(var(--day-width) * $pos_x); background-color: $bg;";
-            echo "<div class='day' style='$style_str'></div>";
-            if ($pos_x === 6) $pos_y++;
-        }
-        echo "</div>";
-    }
-    echo "</div>";
-}
-echo "</div>";
