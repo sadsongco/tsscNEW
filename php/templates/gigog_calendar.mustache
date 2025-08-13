@@ -1,0 +1,43 @@
+<div class="displayShow hidden" id="displayShow">
+    <div id="displayClose" class="displayClose">x</div>
+</div>
+<div class="calendar">
+{{#calendar_arr}}
+    <div class="year">
+    {{#months}}
+        <div class="month">
+            {{#days}}
+                
+                <div class="day{{#shows}} isShow{{/shows}}" style="top: calc(var(--day-width) * {{pos_y}}); left: calc(var(--day-width) * {{pos_x}}); background-color: {{bg}}"
+                {{#shows}}
+                    hx-get="php/get_shows.php?date={{date}}" hx-trigger="click"
+                {{/shows}}
+                >
+                    
+                </div>
+                {{#shows}}
+                    </a>
+                {{/shows}}
+            {{/days}}
+            <div class="monthTitle">{{month}}</div>
+        </div>
+    {{/months}}
+    <div class="yearTitle">{{year}}</div>
+    </div>
+{{/calendar_arr}}
+</div>
+
+<script>
+const closer = document.getElementById('displayClose');
+const closeDisplay = (e) => {
+    const displayShow = document.getElementById('displayShow');
+    displayShow.classList.remove('visible');
+    displayShow.classList.add('hidden');
+}
+window.addEventListener("keydown", (e)=>{
+    if (e.code != "Escape") return
+    const displayShow = document.getElementById('displayShow');
+    displayShow.classList.remove('visible');
+    displayShow.classList.add('hidden');
+})
+</script>

@@ -108,3 +108,114 @@ popover {
 select {
   display: block;
 }
+
+.calendar {
+  --day-width: 15px;
+  --month-width: calc((var(--day-width) * 7) + 28px);
+  --month-height: calc(var(--day-width) * 6 + 24px);
+  --year-width: calc((var(--month-width) * 4) + 8px);
+  --year-height: calc((var(--month-height) * 3) + 6px);
+  --no-show: #222;
+  --is-show: #8888cc;
+  --is-multi-show: #ffaaaa;
+  margin: 2em;
+  padding: 2em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.year {
+  position: relative;
+  /* border: 1px solid white; */
+  border-radius: 0.3em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: var(--year-width);
+  height: var(--year-height);
+  margin: 20px;
+}
+
+.month {
+  /* border: 1px solid red; */
+  position: relative;
+  width: var(--month-width);
+  height: var(--month-height);
+}
+
+.day {
+  position: absolute;
+  border: 2px solid black;
+  width: var(--day-width);
+  height: var(--day-width);
+  z-index: 8;
+}
+
+.isShow {
+  cursor: pointer;
+  z-index: 15;
+}
+
+.yearTitle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  margin-block: auto;
+  width: fit-content;
+  font-size: 10em;
+  opacity: 0.3;
+  mix-blend-mode: color-dodge;
+  z-index: 9;
+}
+
+.monthTitle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: 1.5em;
+  opacity: 0.2;
+}
+
+.displayShow {
+  padding: 0.5em;
+  position: fixed;
+  top: 2em;
+  margin-inline: auto;
+  margin-block: auto;
+  width: fit-content;
+  height: fit-content;
+  background-color: bisque;
+  z-index: 16;
+  transition: all 0.5s ease-in-out;
+}
+
+.displayShow.hidden,
+.displayShow.htmx-added {
+  right: -10em;
+  opacity: 0;
+}
+
+.displayShow.visible {
+  right: 2em;
+  opacity: 1;
+}
+
+.displayShow .displayClose {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  font-size: 1.5em;
+  cursor: pointer;
+  z-index: 15;
+}
+
+.displayShow .displayClose:hover {
+  color: red;
+}

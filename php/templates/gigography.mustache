@@ -1,10 +1,10 @@
 <section class="tabContent">
     <h1>Nigel Powell - Gigography</h1>
     <p class="tabText">I wanted to try and gather together all of the gigs I've done into one place. It will likely be a work in progress for some time...</p>
-
+    <a class="button" hx-get="php/gigog_cal.php" hx-target="#showList">Gig Calendar</a>
     {{#stats}}{{>stats}}{{/stats}}
     {{>filters}}
-    <section class="showList">
+    <section class="showList" id="showList">
     {{#shows}}
         <article id="gigogRow{{show_id}}" class="gigog-row loading" hx-get="php/gigog_entry.php?show_id={{show_id}}&row_num={{row_num}}" hx-trigger="intersect" hx-swap="outerHTML">
             <div>{{row_num}}</div>
