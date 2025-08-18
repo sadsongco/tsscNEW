@@ -12,7 +12,6 @@ $query = "SELECT    id,
                     artist,
                     product AS title,
                     year,
-                    role,
                     notes,
                     cover_art AS imgurl,
                     itunes_link,
@@ -26,6 +25,19 @@ try {
     $stmt->execute([$_GET['id']]);
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
     {
+        try {
+            $query = "SELECT role FROM roles JOIN discog_roles ON roles.role_id = discog_roles.role_id WHERE discog_roles.discog_id = ?;";    
+            $stmt = $db->prepare($query);
+            $stmt->execute([$row['id']]);
+            $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($roles as $role){
+                $row['roles'][] = ucwords($role['role']);
+            }
+        }
+        catch (PDOException $ex) {
+            $output[] = '"ERROR"'.$ex;
+        }
+        $row['roles_str'] = implode(" / ", $row['roles']);
         if (!$row['imgurl']) $row['imgurl'] = $noimage;
         else $row['imgurl'] = $artpath.$row['imgurl'];
         $clip_arr = [];

@@ -1,16 +1,32 @@
-
-<section class="tabHeader">
-    <h1>Nigel Powell - Discography</h1>
-    <div class="imageContainer">
-        <img src="assets/web/images/nigelStudio.jpeg" alt="Nigel Powell in Maida Vale Studios, London" />
+<div id="discog_container">
+    <section class="tabHeader">
+        <h1>Nigel Powell - Discography</h1>
+        <div class="imageContainer">
+            <img src="assets/web/images/nigelStudio.jpeg" alt="Nigel Powell in Maida Vale Studios, London" />
+        </div>
+        <p class='tabText'>Here's a fairly full of list of the albums and other recordings I've played on or produced or been otherwise involved with over time</p>
+    </section>
+    <div class="filter">
+        <form hx-get="php/discog.php" hx-target="#discog_container">
+            <label for="discog_filter">Filter By:</label>
+            <select id="discog_filter" name="discog_filter">
+                <option value="" selected>None</option>
+                {{#roles}}
+                    <option value="{{role_id}}">{{role}}</option>
+                {{/roles}}
+            </select>
+            <input type="submit" value="Filter Discography" />
+        </form>
+        {{#filtered_by}}
+            <p>Filtered by {{filtered_by}}</p>
+        {{/filtered_by}}
     </div>
-    <p class='tabText'>Here's a fairly full of list of the albums and other recordings I've played on or produced or been otherwise involved with over time</p>
-</section>
-<div class="clear"></div>
-<section class="discog">
-    {{#.}}
-        {{>discog_lazy}}
-    {{/.}}
-</section>
+    <div class="clear"></div>
+    <section class="discog">
+        {{#discog_entries}}
+            {{>discog_lazy}}
+        {{/discog_entries}}
+    </section>
+</div>
 
 <script src="/js/audioPlay.js"></script>
