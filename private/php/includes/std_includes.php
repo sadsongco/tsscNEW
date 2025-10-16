@@ -1,7 +1,7 @@
 <?php
 
 // open database connection
-require_once(__DIR__."/../../../../secure/scripts/tssc_ga_connect.php");
+require_once(__DIR__."/../../../../secure/scripts/db_pdo_aconnect.php");
 
 // helpers
 include_once(__DIR__."/../../../php/includes/print_r2.php");

@@ -64,27 +64,55 @@ catch (Exception $e){
 
 // enter into database
 try {
-    $params = $_POST;
-    $query = "INSERT INTO discography VALUES (
-        NULL,
+    $db->beginTransaction();
+    $params = [
+        "artist"=>$_POST['artist'],
+        "product"=>$_POST['product'],
+        "year"=>$_POST['year'],
+        "notes"=>$_POST['notes'],
+        "cover_art"=>$_POST['cover_art'],
+        "itunes_link" => $_POST['itunes_link'],
+        "spotify_link" => $_POST['spotify_link']
+    ];
+    $query = "INSERT INTO discography
+        (artist,
+        product,
+        year,
+        notes,
+        cover_art,
+        itunes_link,
+        spotify_link)
+    VALUES (
         :artist,
         :product,
         :year,
-        :role,
-        :clips,
         :notes,
-        :production,
-        :musician,
         :cover_art,
         :itunes_link,
         :spotify_link
     );";
     $stmt = $db->prepare($query);
     $stmt->execute($params);
+    // insert roles
+    $discog_id = $db->lastInsertId();
+    $role_insert_arr = [];
+    if (isset($_POST['role'])) {
+        foreach ($_POST['role'] as $role) {
+            $role_insert_arr[] = "(" . $discog_id . ", " . $role . ")";
+        }
+    }
+    if (sizeof($role_insert_arr) > 0) {
+        $query = "INSERT INTO discog_roles (discog_id, role_id) VALUES " . implode(", ", $role_insert_arr) . ";";
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+    }
+    $db->commit();
 }
 catch (Exception $e) {
+    $db->rollback();
     echo "Error inserting into databse: ";
     exit($e->getMessage());
 }
+
 
 echo "Discography entry added to database";

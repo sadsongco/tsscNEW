@@ -1,3 +1,4 @@
+<h2>Add Discography Entry</h2>
 <form hx-post="php/add_discog_entry.php" hx-encoding="multipart/form-data">
     <label for="artist">Artist</label>
     <input type="text" name="artist" id="artist" required />
@@ -5,21 +6,15 @@
     <input type="text" name="product" id="product" required />
     <label for="year">Year</label>
     <input type="number" name="year" id="year" min="1992" max="{{year}}" step="1" value="{{year}}" />
-    <label for="role">Role</label>
-    <input type="text" name="role" id="role" />
     <input type="hidden" name="clips" />
     <label for="notes">Notes</label>
     <input type="text" name="notes" id="notes" />
-    <label for="production">Production</label>
-    <select name="production" id="production">
-    <option value="1" selected>Yes</option>
-    <option value="0">No</option>
-    </select>
-    <label for="musician">Musician</label>
-    <select name="musician" id="musician">
-    <option value="1" selected>Yes</option>
-    <option value="0">No</option>
-    </select>
+    {{#roles}}
+    <div class="rolesGrid">
+        <label for="{{role}}">{{role}}</label>
+        <input type="checkbox" id="{{role}}" value="{{role_id}}" name="role[]">
+    </div>
+    {{/roles}}
     <label for="cover_file">Cover Art</label>
     <input type="file" name="cover_file" id="cover_file" />
     <label for="cover_art">Filename</label>
