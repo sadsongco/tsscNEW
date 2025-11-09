@@ -1,6 +1,6 @@
 <?php
 
-require_once("includes/std_includes.php");
+require_once("includes/discog_includes.php");
 
 try {
     $query = "SELECT * FROM roles ORDER BY role;";
