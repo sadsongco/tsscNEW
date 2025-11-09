@@ -1,5 +1,6 @@
 <?php
 
+$gigog = true;
 require_once("includes/std_includes.php");
 
 $countries = getCountries($db);
