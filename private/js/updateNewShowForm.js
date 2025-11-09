@@ -1,12 +1,10 @@
 const addDays = (date, days) => {
   var result = new Date(date);
   result.setDate(result.getDate() + days);
-  console.log(result);
   return result.toISOString().substring(0, 10);
 };
 
 const updateNewShowButton = (event) => {
-  console.log(event.target.dataset.update);
   const addShowButton = document.getElementById('addShow');
   let params = addShowButton.getAttribute('hx-vals');
   params = JSON.parse(params);
@@ -23,7 +21,6 @@ const updateNewShowButton = (event) => {
 
 const updateNewShowForm = (event) => {
   const updateList = document.querySelectorAll('.' + event.target.dataset.update);
-  console.log(event.target.dataset.update);
   updateList.forEach((updateItem) => {
     updateItem.value = event.target.value;
     if (event.target.dataset.update == 'date') (event.target.value = event.target.value), 1;
